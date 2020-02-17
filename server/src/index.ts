@@ -9,6 +9,7 @@ import { join } from 'path';
 import { createKnexRuntimeContext } from '@graphback/runtime'
 import { loadResolversFiles, loadSchemaFiles } from '@graphql-toolkit/file-loading';
 import knex from 'knex'
+import { makeExecutableSchema } from 'graphql-tools';
 
 async function start() {
   const app = express();
@@ -31,9 +32,11 @@ async function start() {
 
   const pubSub = new PubSub();
 
+
+  
   const apolloServer = new ApolloServer({
-    typeDefs: loadSchemaFiles(join(__dirname, '/schema/')),
-    resolvers: loadResolversFiles(join(__dirname, '/resolvers/')),
+    typeDefs: loadSchemaFiles(join(__dirname, '/schema/')) as any,
+    resolvers: loadResolversFiles(join(__dirname, '/resolvers/')) as any,
     context: createKnexRuntimeContext(db as any, pubSub),
     playground: true,
   })
